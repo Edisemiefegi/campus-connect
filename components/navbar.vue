@@ -8,11 +8,14 @@
         class="flex relative justify-between items-center py-5 w-5/6 mx-auto"
       >
         <img src="/public/logo.png" alt="Logo" />
-        <div class="w-3/5 flex gap-10">
+        <div
+          :class="search ? 'md:w-[40%] lg:block hidden lg:flex' : 'md:w-[50%]'"
+          class="gap-10 md:block hidden md:flex"
+        >
           <div
             v-for="item in navOptions"
             :key="item"
-            class="text-white w-full relative cursor-pointer hover:text-light md:block hidden"
+            class="text-white w-full relative cursor-pointer hover:text-light"
             @mouseover="handleMouseOver(item)"
           >
             <ul class="">
@@ -29,6 +32,25 @@
             </ul>
           </div>
         </div>
+
+        <!-- search -->
+        <div
+          v-if="search"
+          class="flex justify-between p-1 pl-4 rounded-full w-[330px] md:w-96 bg-green-100 overflow-hidden"
+        >
+          <input
+            type="text"
+            placeholder="Search here.."
+            class="w-4/6 bg-green-100 text-sm outline-none"
+          />
+          <div
+            class="w-10 h-10 rounded-full bg-secondary flex justify-center items-center"
+          >
+            <i class="pi pi-search text-white"></i>
+          </div>
+        </div>
+
+        <!-- btn -->
         <div class="md:block hidden">
           <Button
             :bgColor="'bg-white'"
@@ -39,6 +61,7 @@
             <RouterLink :to="loginLink"> {{ loginText }} </RouterLink>
           </Button>
         </div>
+
         <div class="block md:hidden">
           <i class="pi pi-bars text-white text-lg"></i>
         </div>
@@ -58,6 +81,10 @@ const props = defineProps({
   navOptions: {
     type: Array,
     required: true, // Array of navbar options (label and link)
+  },
+  search: {
+    type: Boolean,
+    default: false,
   },
 
   loginLink: {

@@ -2,10 +2,17 @@ import { onAuthStateChanged, auth } from "~/service/firebase";
 
 export default defineNuxtRouteMiddleware((to, from) => {
   // Log the current path for debugging purposes
-  //   console.log("Current Path:", to.path);
+  console.log("Current Path:", to.path);
 
   // Allow access to the login or signup page without any checks
-  if (to.path === "/auth/login" || to.path === "/auth/signup") {
+  if (
+    to.path === "/auth/login" ||
+    to.path === "/auth/signup" ||
+    to.path === "/" ||
+    to.path === "/about" ||
+    to.path === "/faq" ||
+    to.path === "/contact"
+  ) {
     return;
   }
 

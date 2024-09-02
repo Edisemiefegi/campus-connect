@@ -3,6 +3,7 @@
     <!-- nav -->
     <div class="relative w-full h-full z-30">
       <navbar
+        :search="true"
         :enableScrollEffect="false"
         :navOptions="[
           { name: 'Home', path: '/dashboard' },
