@@ -13,8 +13,10 @@
     "@pinia/nuxt": "^0.5.2",
     "aos": "^2.3.4",
     "firebase": "^10.12.4",
+    "moment": "^2.30.1",
     "nuxt": "^3.12.4",
     "pinia": "^2.2.0",
+    "pinia-plugin-persistedstate": "^4.1.1",
     "primeicons": "^7.0.0",
     "vue": "latest"
   },

@@ -7,27 +7,31 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
-
 definePageMeta({
   layout: "profile",
 });
 
-const myPosts = ref([
-  {
-    id: 1,
-    caption:
-      "   Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet eius sintag a esse, ut nostrum!",
-    image: "/me.jpg",
-  },
-  {
-    id: 2,
-    caption:
-      "   Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet eius sintag a esse, ut nostrum!",
-    image: "/me.jpg",
-  },
-  // Add more posts as needed
-]);
+import { ref, defineProps } from "vue";
+
+import { usePostStore } from "~/stores/post";
+import { useAuthStore } from "~/stores/authentication";
+
+const Poststore = usePostStore();
+const AuthStore = useAuthStore();
+
+// const user = ref(null);
+// const userPosts = ref(null);
+
+onMounted(() => {
+  Poststore.initUserPost();
+  console.log(Poststore.initUserPost(), "osts");
+});
+
+const loggedinUser = computed(() => AuthStore.getLoggedInUser);
+const myPosts = computed(() => Poststore.Userposts);
+
+console.log(myPosts.value, "my post");
+console.log(loggedinUser.value, "my user");
 </script>
 
 <style lang="scss" scoped></style>

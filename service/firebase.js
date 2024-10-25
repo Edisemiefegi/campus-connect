@@ -13,7 +13,13 @@ import {
   doc,
   setDoc,
   getDoc,
+  updateDoc,
+  query,
+  where,
+  onSnapshot,
+  getDocs,
 } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAKySNPFOZnUJDv5Vj50BfPgfvh6wK8M0c",
@@ -27,10 +33,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const storage = getStorage(app);
 const db = getFirestore(app);
 
 export {
   auth,
+  storage,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
@@ -40,4 +48,9 @@ export {
   doc,
   setDoc,
   getDoc,
+  updateDoc,
+  query,
+  where,
+  onSnapshot,
+  getDocs,
 };

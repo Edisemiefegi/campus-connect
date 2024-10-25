@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['primeicons/primeicons.css'],
   
-  plugins: [{ src: '@/plugins/aos', mode: 'client' }],
+  plugins: [{ src: '@/plugins/aos',    mode: 'client' },  { src: '@/plugins/pinia', mode: 'client' },  '~/plugins/moment.js',],
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt',],
 
 

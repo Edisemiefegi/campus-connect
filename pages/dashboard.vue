@@ -24,7 +24,7 @@
         <div class="w-full md:w-3/5 flex flex-col gap-6">
           <ProfileTab :menuOptions="myMenuOptions" />
 
-          <div v-for="item in myPosts" :key="item">
+          <div v-for="item in allPosts" :key="item">
             <postsPostcard :post="item" />
           </div>
         </div>
@@ -44,28 +44,26 @@ definePageMeta({
   layout: "welcome",
 });
 
+import { usePostStore } from "~/stores/post";
+import { useAuthStore } from "~/stores/authentication";
+
+const Poststore = usePostStore();
+const AuthStore = useAuthStore();
+
 const myMenuOptions = ref([
   { name: " Updates", path: "/dashboard" },
   { name: "Friends", path: "/profile/friends" },
   { name: " Forums", path: "/forums" },
-  // Add more options as needed
 ]);
 
-const myPosts = ref([
-  {
-    id: 1,
-    caption:
-      "   Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet eius sintag a esse, ut nostrum!",
-    image: "/me.jpg",
-  },
-  {
-    id: 2,
-    caption:
-      "   Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet eius sintag a esse, ut nostrum!",
-    image: "/me.jpg",
-  },
-  // Add more posts as needed
-]);
+onMounted(async () => {
+  await Poststore.getAllPosts();
+  Poststore.initUserPost();
+  // console.log(Poststore.getAllPosts(), "allposr");
+  // console.log(Poststore.initUserPost(), "osts");
+});
+
+const allPosts = computed(() => Poststore.allPosts);
 </script>
 
 <style scoped>

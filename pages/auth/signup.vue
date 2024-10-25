@@ -130,6 +130,7 @@ console.log(totalPages.value);
 const visibleFields = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;
+
   return formInput.value.slice(start, end);
 });
 
@@ -158,7 +159,8 @@ const clearData = () => {
 const SignUpUser = async () => {
   console.log(formData.value);
   try {
-    await authstore.signupFunc(formData.value);
+    const payload = { ...formData.value };
+    await authstore.signupFunc(payload);
     router.push({ path: "/dashboard" });
     clearData();
   } catch (error) {

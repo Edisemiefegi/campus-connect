@@ -2,7 +2,7 @@ import { onAuthStateChanged, auth } from "~/service/firebase";
 
 export default defineNuxtRouteMiddleware((to, from) => {
   // Log the current path for debugging purposes
-  console.log("Current Path:", to.path);
+  // console.log("Current Path:", to.path);
 
   // Allow access to the login or signup page without any checks
   if (
@@ -16,18 +16,31 @@ export default defineNuxtRouteMiddleware((to, from) => {
     return;
   }
 
-  // Use a synchronous approach to prevent infinite redirect loops
-  return new Promise((resolve, reject) => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        resolve(true); // Allow navigation to proceed
-      } else {
-        if (to.path !== "/auth/login") {
-          resolve("/auth/login"); // Redirect to login if the user is not authenticated
+  // Check for token in localStorage (or cookies) before Firebase auth check
+  // Ensure this code only runs on the client-side
+  if (process.client) {
+    const userToken = localStorage.getItem("authToken");
+
+    if (userToken) {
+      return; // Allow navigation if token is present
+    }
+
+    // Use Firebase to check auth state
+    return new Promise((resolve, reject) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // console.log(user, "user");
+
+          // Store the token in localStorage
+          localStorage.setItem("authToken", user.accessToken);
+          resolve(true); // Allow navigation
         } else {
-          resolve(true); // Stay on the login page
+          resolve("/auth/login"); // Redirect to login if not authenticated
         }
-      }
+      });
     });
-  });
+  } else {
+    // In the server-side context, just return to avoid errors
+    return;
+  }
 });

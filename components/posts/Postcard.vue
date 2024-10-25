@@ -2,25 +2,46 @@
   <div class="bg-white w-full h-fit rounded-lg p-8 flex flex-col gap-5">
     <div class="flex justify-between">
       <div>
-        <ProfileProfilecard />
-        <p class="text-sm text-gray-400 mt-2">4hr ago</p>
+        <ProfileProfilecard :user="post.user" />
+        <p class="text-sm text-gray-400 mt-2">{{ formattedDate }}</p>
       </div>
       <i class="pi pi-ellipsis-v"></i>
     </div>
     <p>
-      {{ post.caption }}
+      {{ post?.caption }}
     </p>
-    <div class="w-full h-fit rounded-lg overflow-hidden">
+    <div
+      v-if="post?.image && post?.image.length > 0"
+      class="w-full h-fit rounded-lg overflow-hidden"
+    >
       <img
-        v-if="post.image"
-        :src="post.image"
+        v-if="post?.image.length === 1"
+        :src="post?.image[0]"
         alt="Post image"
-        class="object-cover w-full h-full"
+        class="object-cover w-full h-full cursor-pointer"
       />
+
+      <!-- Grid layout for 2 to 4 images -->
+      <div v-else-if="post?.image.length > 1" class="grid grid-cols-2 gap-4">
+        <img
+          v-for="(image, index) in post?.image"
+          :key="index"
+          :src="image"
+          alt="Post Image"
+          class="h-auto object-cover cursor-pointer"
+        />
+      </div>
     </div>
     <div class="flex justify-between">
       <div class="flex gap-4">
-        <i class="pi pi-heart"></i>
+        <div class="flex justify-center gap-1">
+          <p class="-mt-1">{{ post?.likedBy.length }}</p>
+          <i
+            class="pi pi-heart cursor-pointer"
+            @click="likeFunc()"
+            :class="liked ? 'text-red-600 ' : ''"
+          ></i>
+        </div>
         <i class="pi pi-bookmark"></i>
       </div>
       <div class="flex gap-3 justify-center items-center">
@@ -33,6 +54,12 @@
 
 <script setup>
 import { ref, defineProps } from "vue";
+import moment from "moment";
+import { usePostStore } from "~/stores/post";
+import { useAuthStore } from "~/stores/authentication";
+
+const store = usePostStore();
+const Authstore = useAuthStore();
 
 const props = defineProps({
   post: {
@@ -40,6 +67,29 @@ const props = defineProps({
     required: true,
   },
 });
+
+// console.log(props.post, "ddjdj");
+
+const formattedDate = computed(() => {
+  if (!props.post || !props.post.createdAt || !props.post.createdAt.seconds) {
+    return "Date not available";
+  }
+
+  const timestampFromFirebase = new Date(props.post.createdAt.seconds * 1000);
+
+  // Convert to relative time using Moment.js
+  const relativeTime = moment(timestampFromFirebase).fromNow();
+
+  return relativeTime;
+});
+
+const liked = computed(() => {
+  return props?.post?.likedBy.includes(Authstore.loginUser.id);
+});
+
+const likeFunc = async () => {
+  await store.likesfunc(props.post, Authstore.loginUser.id);
+};
 </script>
 
 <style lang="scss" scoped></style>

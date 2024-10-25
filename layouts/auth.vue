@@ -1,19 +1,8 @@
 <template>
   <div class="w-full h-full relative">
-    <navbar
-      :enableScrollEffect="true"
-      :navOptions="[
-        { name: 'Home', path: '/' },
-        { name: 'Community', path: '/' },
-        { name: 'About', path: '/about' },
-        { name: 'Contact Us', path: '/contact' },
-        { name: 'FAQ(s)', path: '/faq' },
-      ]"
-      :loginLink="'/auth/login'"
-      :loginText="'Login'"
-    />
+    <navbar />
 
-    <div class="w-full lg:h-full h-[900px] relative">
+    <div class="w-full xl:h-full h-[900px] relative">
       <img src="/public/gif.gif" alt="" class="w-full h-full object-cover" />
       <div
         class="w-3/4 md:w-3/5 h-fit bg-secondary py-10 px-8 flex gap-4 flex-col md:flex-row top-28 absolute left-1/2 transform -translate-x-1/2 shadow-md rounded-md overflow-hidden"

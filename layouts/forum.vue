@@ -2,14 +2,19 @@
   <div>
     <div class="relative w-full h-full z-30">
       <navbar
+        :isDisplayed="true"
         :search="true"
         :enableScrollEffect="false"
         :navOptions="[
-          { name: 'Home', path: '/dashboard' },
-          { name: 'Profile', path: '/profile/posts' },
-          { name: 'Forum', path: '/forums' },
-          { name: 'Jobs', path: '/jobs' },
-          { name: 'Shop', path: '/shop' },
+          { name: 'Home', path: '/dashboard', icon: 'pi pi-home' },
+
+          { name: 'Post new', icon: 'pi pi-pencil' },
+          { name: 'Messaging', path: '/messaging', icon: 'pi pi-comments' },
+          { name: 'Notification', path: '/notifications', icon: 'pi pi-bell' },
+
+          { name: 'Forum', path: '/forums', icon: 'pi pi-users' },
+          { name: 'Jobs', path: '/jobs', icon: 'pi pi-briefcase' },
+          { name: 'Shop', path: '/shop', icon: 'pi pi-cart-arrow-down' },
         ]"
         :loginLink="'/'"
         :loginText="'Logout'"

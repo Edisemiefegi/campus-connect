@@ -60,7 +60,8 @@ const form = ref({
 
 const LoginUser = async () => {
   try {
-    await authstore.loginFunc(form.value);
+    const payload = { ...form.value };
+    await authstore.loginFunc(payload);
     router.push({ path: "/dashboard" });
     form.value.email = "";
     form.value.password = "";

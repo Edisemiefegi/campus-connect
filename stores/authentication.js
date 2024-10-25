@@ -12,9 +12,13 @@ import {
 } from "~/service/firebase";
 
 export const useAuthStore = defineStore("authentication", {
-  state: () => {
-    users: [];
-    LoginUser: null;
+  state: () => ({
+    users: [],
+    loginUser: null,
+  }),
+
+  getters: {
+    getLoggedInUser: (state) => state.loginUser,
   },
 
   actions: {
@@ -26,11 +30,28 @@ export const useAuthStore = defineStore("authentication", {
           form.password
         );
 
-        const userId = userCredential.user.uid;
+        const id = userCredential.user.uid;
 
-        await setDoc(doc(db, "users", userId), form);
+        const userdetails = {
+          id: id,
+          identification: form.identification,
+          email: form.email,
+          username: form.username,
+          password: form.password,
+          department: form.department,
+          university: form.university,
+          bio: [],
+          following: [],
+          friends: [],
+          image: "",
+          role: form.role,
+        };
 
-        this.LoginUser = form;
+        await setDoc(doc(db, "users", id), userdetails);
+
+        this.loginUser = userdetails;
+
+        // console.log(this.loginUser, "register");
       } catch (error) {
         console.log(error.message);
         throw error;
@@ -44,13 +65,17 @@ export const useAuthStore = defineStore("authentication", {
           form.email,
           form.password
         );
-        const userId = userCredential.user.uid;
 
-        const docRef = doc(db, "users", userId);
+        const id = userCredential.user.uid;
+        console.log(id, "id");
+
+        const docRef = doc(db, "users", id);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          this.LoginUser = docSnap.data();
+          this.loginUser = docSnap.data();
+
+          // console.log(this.loginUser, docSnap.data(), "login");
         } else {
           // docSnap.data() will be undefined in this case
           console.log("No such document!");
@@ -60,4 +85,6 @@ export const useAuthStore = defineStore("authentication", {
       }
     },
   },
+
+  persist: true,
 });
