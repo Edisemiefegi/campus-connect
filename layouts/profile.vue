@@ -24,6 +24,7 @@
       <div class="h-fit bg-gray-100 mt-20">
         <div class="w-5/6 mx-auto pt-20 pb-20 flex flex-col gap-10">
           <announcement
+            :postCount="myPosts?.length"
             bgClass="bg-secondary"
             showProfile
             layoutClass="flex-row"
@@ -45,9 +46,28 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "~/stores/authentication";
+
+import { usePostStore } from "~/stores/post";
+
 definePageMeta({
   layout: "welcome",
 });
+const AuthStore = useAuthStore();
+
+const Poststore = usePostStore();
+
+const loggedinUser = computed(() => AuthStore.getLoggedInUser);
+
+onMounted(() => {
+  Poststore.initUserPost();
+  Poststore.getFavPost();
+
+  console.log(Poststore.initUserPost(), "ostsii");
+});
+const myPosts = computed(() => Poststore.Userposts);
+
+console.log(myPosts.value, "my postjjj");
 </script>
 
 <style lang="scss" scoped></style>

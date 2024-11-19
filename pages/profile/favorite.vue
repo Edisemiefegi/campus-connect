@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex flex-col gap-5">
     <div v-for="item in myPosts" :key="item.id">
-      <postsPostcard :post="item" />
+      <postsPostcard :post="item.post" />
     </div>
   </div>
 </template>
@@ -23,12 +23,12 @@ const AuthStore = useAuthStore();
 // const userPosts = ref(null);
 
 onMounted(() => {
-  Poststore.initUserPost();
-  console.log(Poststore.initUserPost(), "osts");
+  Poststore.getFavPost();
+  // console.log(Poststore.initUserPost(), "osts");
 });
 
 const loggedinUser = computed(() => AuthStore.getLoggedInUser);
-const myPosts = computed(() => Poststore.Userposts);
+const myPosts = computed(() => Poststore.favPosts);
 
 console.log(myPosts.value, "my post");
 console.log(loggedinUser.value, "my user");

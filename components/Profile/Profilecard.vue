@@ -6,7 +6,7 @@
       <div
         class="justify-center items-center bg-gray-600 flex rounded-full w-14 h-14"
       >
-        <i class="pi pi-user text-white" v-if="user.image == ''"></i>
+        <i class="pi pi-user text-white" v-if="!user?.image"></i>
         <img
           v-else
           :src="user?.image"
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div>
-      <p class="font-semibold">{{ user.username }}</p>
+      <p class="font-semibold">{{ user?.PersonalInfo?.username }}</p>
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@ const props = defineProps({
   },
 });
 
-// console.log(props.user, "user");
+console.log(props.user, "user");
 </script>
 
 <style lang="scss" scoped></style>

@@ -59,11 +59,10 @@ const myMenuOptions = ref([
 onMounted(async () => {
   await Poststore.getAllPosts();
   Poststore.initUserPost();
-  // console.log(Poststore.getAllPosts(), "allposr");
-  // console.log(Poststore.initUserPost(), "osts");
 });
 
 const allPosts = computed(() => Poststore.allPosts);
+console.log(allPosts.value, "all");
 </script>
 
 <style scoped>

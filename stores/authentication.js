@@ -9,6 +9,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  signOut,
 } from "~/service/firebase";
 
 export const useAuthStore = defineStore("authentication", {
@@ -32,19 +33,58 @@ export const useAuthStore = defineStore("authentication", {
 
         const id = userCredential.user.uid;
 
+        // const userdetails = {
+        //   id: id,
+        //   identification: form.identification,
+        //   email: form.email,
+        //   username: form.username,
+        //   password: form.password,
+        //   department: form.department,
+        //   university: form.university,
+        //   bio: [
+        //     {
+        //       info: "Contact Info",
+        //       name: form.username,
+        //       email: form.email,
+        //       phone: "",
+        //       address: "",
+        //     },
+        //     {
+        //       info: "Education And Other Information",
+        //       birthday: "",
+        //       education: form.department,
+        //       level: "",
+        //       institution: form.university,
+        //       employment: form.role,
+        //       hobbies: "",
+        //     },
+        //   ],
+        //   following: [],
+        //   friends: [],
+        //   image: "",
+        //   role: form.role,
+        // };
+
         const userdetails = {
           id: id,
-          identification: form.identification,
-          email: form.email,
-          username: form.username,
           password: form.password,
-          department: form.department,
-          university: form.university,
-          bio: [],
-          following: [],
+          ContactInfo: {
+            email: form.email,
+            phone: "",
+            address: "",
+          },
+          PersonalInfo: {
+            username: form.username,
+            birthday: "",
+            department: form.department,
+            university: form.university,
+            level: "",
+            identification: form.identification,
+            employment: form.role,
+            hobbies: "",
+          },
           friends: [],
           image: "",
-          role: form.role,
         };
 
         await setDoc(doc(db, "users", id), userdetails);
@@ -82,6 +122,17 @@ export const useAuthStore = defineStore("authentication", {
         }
       } catch (error) {
         console.log(error.message);
+      }
+    },
+
+    async signOutUser() {
+      try {
+        await signOut(auth);
+        this.loginUser = null;
+        console.log(this.loginUser, "signoutnull");
+      } catch (error) {
+        console.log(error.message);
+        throw error;
       }
     },
   },

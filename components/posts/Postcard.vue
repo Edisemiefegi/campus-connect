@@ -2,7 +2,7 @@
   <div class="bg-white w-full h-fit rounded-lg p-8 flex flex-col gap-5">
     <div class="flex justify-between">
       <div>
-        <ProfileProfilecard :user="post.user" />
+        <ProfileProfilecard :user="post?.user" />
         <p class="text-sm text-gray-400 mt-2">{{ formattedDate }}</p>
       </div>
       <i class="pi pi-ellipsis-v"></i>
@@ -22,7 +22,7 @@
       />
 
       <!-- Grid layout for 2 to 4 images -->
-      <div v-else-if="post?.image.length > 1" class="grid grid-cols-2 gap-4">
+      <div v-else-if="post?.image?.length > 1" class="grid grid-cols-2 gap-4">
         <img
           v-for="(image, index) in post?.image"
           :key="index"
@@ -35,14 +35,18 @@
     <div class="flex justify-between">
       <div class="flex gap-4">
         <div class="flex justify-center gap-1">
-          <p class="-mt-1">{{ post?.likedBy.length }}</p>
+          <p class="-mt-1">{{ post?.likedBy?.length }}</p>
           <i
             class="pi pi-heart cursor-pointer"
             @click="likeFunc()"
             :class="liked ? 'text-red-600 ' : ''"
           ></i>
         </div>
-        <i class="pi pi-bookmark"></i>
+        <i
+          class="pi pi-bookmark cursor-pointer"
+          @click="favFunc()"
+          :class="fav ? 'text-red-600 ' : ''"
+        ></i>
       </div>
       <div class="flex gap-3 justify-center items-center">
         <p>4</p>
@@ -84,12 +88,28 @@ const formattedDate = computed(() => {
 });
 
 const liked = computed(() => {
-  return props?.post?.likedBy.includes(Authstore.loginUser.id);
+  return props?.post?.likedBy?.includes(Authstore.loginUser.id);
 });
+
+const fav = computed(() => {
+  return store?.favPosts?.find((e) => e.post.postid === props.post.postid);
+});
+
+console.log(fav.value, "fave");
 
 const likeFunc = async () => {
   await store.likesfunc(props.post, Authstore.loginUser.id);
 };
+
+const favFunc = async () => {
+  console.log(store.favPosts, "sjjd");
+
+  await store.favPostfunc(props.post, Authstore.loginUser.id);
+};
+
+onMounted(() => {
+  // store.getFavPost();
+});
 </script>
 
 <style lang="scss" scoped></style>

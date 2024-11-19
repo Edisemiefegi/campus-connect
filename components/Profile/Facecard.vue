@@ -9,7 +9,7 @@
           <p class="ml-20 -mt-7 text-sm text-white">United State of America</p>
         </div>
         <div class="w-full md:w-4/12 flex justify-between text-white">
-          <p>Post: 4</p>
+          <p>Post: 0</p>
           <p>Friends: 4</p>
           <p>Forums: 4</p>
         </div>
@@ -26,6 +26,20 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { usePostStore } from "~/stores/post";
+import { useAuthStore } from "~/stores/authentication";
+
+const Poststore = usePostStore();
+const AuthStore = useAuthStore();
+const myPosts = computed(() => Poststore.Userposts);
+// onMounted(() => {
+//   Poststore.initUserPost();
+
+//   console.log(Poststore.initUserPost(), "ostskk");
+// });
+
+console.log(myPosts.value, "jjj");
+</script>
 
 <style lang="scss" scoped></style>

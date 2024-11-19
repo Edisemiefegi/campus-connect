@@ -1,4 +1,5 @@
 import { onAuthStateChanged, auth } from "~/service/firebase";
+import { useAuthStore } from "~/stores/authentication";
 
 export default defineNuxtRouteMiddleware((to, from) => {
   // Log the current path for debugging purposes
@@ -21,6 +22,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
   if (process.client) {
     const userToken = localStorage.getItem("authToken");
 
+    const AuthStore = useAuthStore();
+
     if (userToken) {
       return; // Allow navigation if token is present
     }
@@ -35,6 +38,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
           localStorage.setItem("authToken", user.accessToken);
           resolve(true); // Allow navigation
         } else {
+          AuthStore.signOutUser();
           resolve("/auth/login"); // Redirect to login if not authenticated
         }
       });

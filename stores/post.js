@@ -19,6 +19,7 @@ import {
   getDocs,
   getDoc,
   onSnapshot,
+  deleteDoc,
 } from "~/service/firebase";
 
 import { useAuthStore } from "~/stores/authentication";
@@ -27,6 +28,8 @@ import { useUserStore } from "~/stores/user";
 export const usePostStore = defineStore("post", {
   state: () => ({
     Userposts: [],
+    favPosts: [],
+
     allPosts: [],
   }),
 
@@ -149,6 +152,65 @@ export const usePostStore = defineStore("post", {
       await updateDoc(docRef, {
         likedBy: likes,
       });
+    },
+
+    async favPostfunc(post, userid) {
+      try {
+        const postExist = this.favPosts.find(
+          (e) => e.post.postid === post.postid
+        );
+
+        // console.log(postExist, "ejej");
+
+        if (!postExist) {
+          const favpost = {
+            post: post,
+            id: "",
+            userid: userid,
+          };
+          const docRef = await addDoc(collection(db, "favorites"), favpost);
+
+          await updateDoc(docRef, {
+            id: docRef.id,
+          });
+        } else {
+          const data = this.favPosts.filter(
+            (e) => e.post.postid !== post.postid
+          );
+
+          this.favPosts = data;
+
+          let id = postExist.id;
+
+          await deleteDoc(doc(db, "favorites", id));
+        }
+      } catch (error) {}
+    },
+
+    async getFavPost() {
+      try {
+        const store = useAuthStore();
+        const userid = store.loginUser.id;
+        const post = [];
+
+        const q = query(
+          collection(db, "favorites"),
+          where("userid", "==", userid)
+        );
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+
+          post.push(data);
+        });
+        console.log(post, "fav");
+
+        this.favPosts = post;
+        // console.log(this.favPosts, "favv");
+      } catch (error) {
+        console.log(error.message);
+      }
     },
   },
 

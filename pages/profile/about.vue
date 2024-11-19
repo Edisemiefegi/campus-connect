@@ -1,19 +1,53 @@
 <template>
   <div class="w-full flex flex-col gap-8">
     <ProfileTab :menuOptions="menuOptions" class="w-full" />
-    <ProfileInfo :infoDetails="contactDetails" :info="'Contact Info'" />
 
-    <ProfileInfo
-      :infoDetails="educationDetails"
-      :info="'Education And Other Information'"
-    />
+    <div
+      v-for="item in UserStore.bio"
+      :key="item.info"
+      class="flex flex-col gap-4 bg-white p-10 rounded-lg shadow-md"
+    >
+      <h2 class="text-xl font-semibold">{{ item.info }}</h2>
+      <div class="flex gap-1.5">
+        <div class="w-2 p-0.5 bg-primary"></div>
+        <div class="p-0.5 w-7 bg-primary"></div>
+      </div>
+
+      <template v-for="[key, value] in Object.entries(item)">
+        <li
+          v-if="key !== 'info'"
+          :key="key"
+          class="border-b p-4 flex justify-between w-full"
+        >
+          <strong>{{ key }}:</strong>
+
+          <span class="w-3/5">
+            {{ value || "N/A" }}
+          </span>
+        </li>
+      </template>
+      <!-- <ProfileInfo :infoDetails="item" :info="item.info" /> -->
+    </div>
   </div>
 </template>
 
 <script setup>
+import { useUserStore } from "~/stores/user";
+import { useAuthStore } from "~/stores/authentication";
+
 definePageMeta({
   layout: "profile",
 });
+
+const store = useAuthStore();
+
+console.log(store.loginUser, "loginusuus");
+
+const UserStore = useUserStore();
+
+const userDetails = computed(() => store.getLoggedInUser);
+
+console.log(userDetails.value, "userde");
 
 const menuOptions = ref([
   { name: "View", path: "/profile/about" },
@@ -21,22 +55,10 @@ const menuOptions = ref([
   { name: "Change Photo", path: "/profile/editProfilePhoto" },
 ]);
 
-const contactDetails = ref([
-  { label: "Name", value: "Rebeca Powel", isInput: false },
-  { label: "Email", value: "info@example.com", isInput: false },
-  { label: "Phone", value: "123 98566836", isInput: false },
-  { label: "Address", value: "59 Street, Newyork City", isInput: false },
-  { label: "Website", value: "http://www.rebeca.com", isInput: false },
-]);
-
-const educationDetails = ref([
-  { label: "Birthday", value: "Rebeca Powel", isInput: false },
-  { label: "Education", value: "info@example.com", isInput: false },
-  { label: "Level", value: "http://www.rebeca.com", isInput: false },
-  { label: "Institution", value: "123 98566836", isInput: false },
-  { label: "Employment", value: "59 Street, Newyork City", isInput: false },
-  { label: "Hobbies", value: "http://www.rebeca.com", isInput: false },
-]);
+onMounted(() => {
+  UserStore.fetchBio();
+  console.log(UserStore.bio, "shshh");
+});
 </script>
 
 <style lang="scss" scoped></style>

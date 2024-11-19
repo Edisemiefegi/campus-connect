@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -18,6 +19,7 @@ import {
   where,
   onSnapshot,
   getDocs,
+  deleteDoc,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -53,4 +55,6 @@ export {
   where,
   onSnapshot,
   getDocs,
+  deleteDoc,
+  signOut,
 };
