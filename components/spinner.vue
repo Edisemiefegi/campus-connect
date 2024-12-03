@@ -1,6 +1,6 @@
 <template>
   <div>
-    <i class="pi pi-spin pi-spinner"></i>
+    <i class="pi pi-spin pi-spinner text-white"></i>
   </div>
 </template>
 

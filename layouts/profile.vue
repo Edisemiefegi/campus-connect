@@ -8,7 +8,6 @@
         :navOptions="[
           { name: 'Home', path: '/dashboard', icon: 'pi pi-home' },
 
-          { name: 'Post new', icon: 'pi pi-pencil' },
           { name: 'Messaging', icon: 'pi pi-comments' },
           { name: 'Notification', path: '/notifications', icon: 'pi pi-bell' },
 

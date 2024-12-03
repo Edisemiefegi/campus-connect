@@ -23,6 +23,7 @@
         </p>
       </div>
       <Button
+        :disabled="loading"
         type="submit"
         class="w-full flex justify-center items-center"
         :variant="'none'"
@@ -31,8 +32,10 @@
         :rounded="'rounded-full'"
         :size="'md'"
       >
-        Login
+        <spinner v-if="loading" />
+        <span v-else> Login </span>
       </Button>
+
       <p class="text-sm text-center">
         Do not have an account?<span class="text-primary font-bold">
           <RouterLink to="/auth/signup">Signup</RouterLink></span
@@ -52,6 +55,7 @@ definePageMeta({
 
 const router = useRouter();
 const authstore = useAuthStore();
+const loading = ref(false);
 
 const form = ref({
   email: "",
@@ -60,6 +64,7 @@ const form = ref({
 
 const LoginUser = async () => {
   try {
+    loading.value = true;
     const payload = { ...form.value };
     await authstore.loginFunc(payload);
     router.push({ path: "/dashboard" });
@@ -67,6 +72,8 @@ const LoginUser = async () => {
     form.value.password = "";
   } catch (error) {
     console.log(error.message);
+  } finally {
+    loading.value = false;
   }
 };
 </script>

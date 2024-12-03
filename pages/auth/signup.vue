@@ -47,6 +47,7 @@
 
         <Button
           v-if="currentPage === totalPages"
+          :disabled="loading"
           type="submit"
           class="w-[48%] flex justify-center items-center"
           :variant="'none'"
@@ -55,7 +56,8 @@
           :rounded="'rounded-full'"
           :size="'md'"
         >
-          Signup
+          <spinner v-if="loading" />
+          <span v-else> Signup</span>
         </Button>
       </div>
 
@@ -78,6 +80,7 @@ definePageMeta({
 
 const router = useRouter();
 const authstore = useAuthStore();
+const loading = ref(false);
 
 const formInput = ref([
   {
@@ -159,6 +162,7 @@ const clearData = () => {
 const SignUpUser = async () => {
   console.log(formData.value);
   try {
+    loading.value = true;
     const payload = { ...formData.value };
     await authstore.signupFunc(payload);
     router.push({ path: "/dashboard" });
@@ -166,6 +170,8 @@ const SignUpUser = async () => {
   } catch (error) {
     console.log(error.message);
     throw error;
+  } finally {
+    loading.value = false;
   }
 };
 </script>

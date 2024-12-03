@@ -46,7 +46,7 @@
               placeholder="Your Message"
             ></textarea>
           </div>
-          <Button :size="md">Send Us Message</Button>
+          <Button>Send Us Message</Button>
         </form>
 
         <div class="w-full md:w-[40%] flex flex-col gap-6">

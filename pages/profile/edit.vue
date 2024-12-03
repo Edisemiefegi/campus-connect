@@ -37,13 +37,16 @@
       </div>
 
       <Button
+        :disabled="loading"
         type="submit"
         :bgColor="'bg-primary'"
         :textColor="'text-white'"
         :rounded="'rounded-md'"
         :size="'sm'"
       >
-        Submit
+        <spinner v-if="loading" />
+
+        <span v-else> Submit </span>
       </Button>
     </form>
   </div>
@@ -60,6 +63,7 @@ definePageMeta({
 
 const userStore = useUserStore();
 const bio = ref(null);
+const loading = ref(false);
 
 onMounted(() => {
   userStore.fetchBio();
@@ -68,15 +72,21 @@ onMounted(() => {
 });
 
 async function submitBio() {
-  await userStore.updateBio(bio.value);
+  try {
+    loading.value = true;
+    await userStore.updateBio(bio.value);
 
-  alert("Profile updated!");
+    alert("Profile updated!");
+  } catch (error) {
+  } finally {
+    loading.value = false;
+  }
 }
 
 const menuOptions = ref([
   { name: "View", path: "/profile/about" },
   { name: "Edit", path: "/profile/edit" },
-  { name: "Change Photo", path: "/profile/editProfilePhoto" },
+  { name: "Profile", path: "/profile/editProfilePhoto" },
 ]);
 </script>
 

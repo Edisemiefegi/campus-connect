@@ -34,13 +34,25 @@
           </div>
         </div>
 
+        <!-- commuinty -->
+        <div class="relative" v-if="!isDisplayed">
+          <div
+            @mouseover="showList = true"
+            class="flex flex-col items-center justify-center cursor-pointer"
+          >
+            <i class="pi pi-globe text-white text-sm md:text-2xl"></i>
+          </div>
+          <!-- Showcommunity component on hover -->
+          <div @mouseleave="showList = false" v-if="showList">
+            <Showcommunity />
+          </div>
+        </div>
         <!-- nav options -->
         <div class="flex items-center gap-2 w-3/5">
           <div
             v-for="item in navOptions"
             :key="item"
             class="text-white w-full relative cursor-pointer"
-            @mouseover="handleMouseOver(item)"
             @click="handlePostModal(item)"
           >
             <ul class="">
@@ -71,22 +83,31 @@
                 </RouterLink>
 
                 <!-- Showcommunity component on hover -->
-                <div
+                <!-- <div
                   @mouseleave="showList = false"
                   v-if="item.name === 'Community' && showList"
                 >
                   <Showcommunity />
-                </div>
-
-                <!-- show post modal -->
-                <keep-alive>
-                  <div v-if="showPostModal">
-                    <PostsCreatePost @close="showPostModal = false" />
-                  </div>
-                </keep-alive>
+                </div> -->
               </li>
             </ul>
           </div>
+        </div>
+
+        <!-- post section -->
+        <div class="relative" v-if="isDisplayed">
+          <div
+            @click="showPostModal = true"
+            class="flex flex-col items-center justify-center cursor-pointer"
+          >
+            <i class="pi pi-pencil text-white text-sm md:text-2xl"></i>
+          </div>
+          <!-- show post modal -->
+          <keep-alive>
+            <div v-if="showPostModal">
+              <PostsCreatePost @close="showPostModal = false" />
+            </div>
+          </keep-alive>
         </div>
 
         <!-- Profile Section -->
@@ -96,10 +117,17 @@
             class="flex flex-col items-center justify-center cursor-pointer"
           >
             <img
-              src="/me.jpg"
+              v-if="user?.image"
+              :src="user?.image?.url"
               alt="Profile"
               class="md:w-8 md:h-8 w-6 h-6 rounded-full"
             />
+            <div
+              v-else
+              class="md:w-8 md:h-8 rounded-full w-6 h-6 flex justify-center items-center"
+            >
+              <i class="pi pi-user text-white"></i>
+            </div>
             <span class="text-white text-sm hidden lg:block">Me</span>
           </div>
 
@@ -134,12 +162,16 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useAuthStore } from "~/stores/authentication";
+
 const showProfileModal = ref(false);
 const isScrolled = ref(false);
 const showList = ref(false);
 const showPostModal = ref(false);
+const store = useAuthStore();
 
 const router = useRouter();
+const user = computed(() => store.getLoggedInUser);
 
 // Prop to toggle scroll effect
 const props = defineProps({
@@ -148,7 +180,7 @@ const props = defineProps({
 
     default: [
       { name: "Home", path: "/", icon: "pi pi-home" },
-      { name: "Community", path: "/", icon: "pi pi-globe" },
+      // { name: "Community", path: "/", icon: "pi pi-globe" },
       { name: "About", path: "/about", icon: "pi pi-volume-up" },
       { name: "Contact Us", path: "/contact", icon: "pi pi-phone" },
       { name: "FAQ(s)", path: "/faq", icon: "pi pi-question-circle" },
@@ -178,21 +210,21 @@ const props = defineProps({
 });
 
 // Handle mouse hover over "Community" option
-const handleMouseOver = (option) => {
-  if (option.name === "Community") {
-    showList.value = true;
-  }
-};
+// const handleMouseOver = (option) => {
+//   if (option.name === "Community") {
+//     showList.value = true;
+//   }
+// };
 
 // Handle click on  "create post " option
 const handlePostModal = (option) => {
   console.log(option, "option");
 
-  if (option.name === "Post new") {
-    showPostModal.value = true;
-  } else {
-    router.push({ path: `${option.path}` });
-  }
+  // if (option.name === "Post new") {
+  //   showPostModal.value = true;
+  // } else {
+  router.push({ path: `${option.path}` });
+  // }
 };
 
 // Toggle modal visibility

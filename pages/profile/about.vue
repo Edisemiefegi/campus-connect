@@ -52,7 +52,7 @@ console.log(userDetails.value, "userde");
 const menuOptions = ref([
   { name: "View", path: "/profile/about" },
   { name: "Edit", path: "/profile/edit" },
-  { name: "Change Photo", path: "/profile/editProfilePhoto" },
+  { name: "Profile", path: "/profile/editProfilePhoto" },
 ]);
 
 onMounted(() => {

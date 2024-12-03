@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import { doc, getDoc, db, updateDoc } from "~/service/firebase";
+import { doc, getDoc, db, updateDoc, storage } from "~/service/firebase";
+import { ref, deleteObject } from "firebase/storage";
 
 import { useAuthStore } from "~/stores/authentication";
 
@@ -76,6 +77,47 @@ export const useUserStore = defineStore("user", {
       this.bio = bio;
     },
 
+    async editProfileImg(img) {
+      try {
+        const store = useAuthStore();
+
+        const docRef = doc(db, "users", store.loginUser.id);
+
+        await updateDoc(docRef, {
+          image: img,
+        });
+
+        store.loginUser = {
+          ...store.loginUser,
+          image: img,
+        };
+      } catch (error) {
+        throw error;
+      }
+    },
+
+    async removeProfileImg() {
+      try {
+        const store = useAuthStore();
+        const fileRef = ref(storage, path);
+
+        await deleteObject(fileRef);
+
+        const docRef = doc(db, "users", store.loginUser.id);
+
+        await updateDoc(docRef, {
+          image: "",
+        });
+
+        store.loginUser = {
+          ...store.loginUser,
+          image: "",
+        };
+        console.log(store.loginUser.image, "profile deleted");
+      } catch (error) {
+        throw error;
+      }
+    },
     // async deleteFunc(fileUrl) {
     //   console.log(fileUrl, "ur;s");
     //   const fileRef = ref(storage, fileUrl);

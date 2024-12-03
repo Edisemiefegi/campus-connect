@@ -29,7 +29,7 @@ const Poststore = usePostStore();
 const navOptions = ref([
   { name: "Home", path: "/dashboard", icon: "pi pi-home" },
 
-  { name: "Post new", path: "/dashboard", icon: "pi pi-pencil" },
+  // { name: "Post new", icon: "pi pi-pencil" },
   { name: "Messaging", path: "/messaging", icon: "pi pi-comments" },
   { name: "Notification", path: "/notifications", icon: "pi pi-bell" },
 
