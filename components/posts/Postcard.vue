@@ -95,21 +95,17 @@ const fav = computed(() => {
   return store?.favPosts?.find((e) => e.post.postid === props.post.postid);
 });
 
-console.log(fav.value, "fave");
+// console.log(fav.value, "fave");
 
 const likeFunc = async () => {
   await store.likesfunc(props.post, Authstore.loginUser.id);
 };
 
 const favFunc = async () => {
-  console.log(store.favPosts, "sjjd");
+  // console.log(store.favPosts, "sjjd");
 
   await store.favPostfunc(props.post, Authstore.loginUser.id);
 };
-
-onMounted(() => {
-  // store.getFavPost();
-});
 </script>
 
 <style lang="scss" scoped></style>

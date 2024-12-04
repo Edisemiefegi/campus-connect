@@ -62,13 +62,7 @@ onMounted(async () => {
 });
 
 const allPosts = computed(() => Poststore.allPosts);
-console.log(allPosts.value, "all");
+// console.log(allPosts.value, "all");
 </script>
 
-<style scoped>
-.router-link-exact-active {
-  border-bottom: 4px solid #183a37;
-  color: #183a37;
-  font-weight: bold;
-}
-</style>
+<style scoped></style>

@@ -10,7 +10,7 @@
 <script setup></script>
 
 <style scoped>
-.router-link-exact-active {
+/* .router-link-exact-active {
   text-decoration: underline;
-}
+} */
 </style>

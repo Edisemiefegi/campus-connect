@@ -61,6 +61,12 @@ definePageMeta({
   layout: "profile",
 });
 
+const menuOptions = ref([
+  { name: "View", path: "/profile/about" },
+  { name: "Edit", path: "/profile/edit" },
+  { name: "Profile", path: "/profile/editProfilePhoto" },
+]);
+
 const userStore = useUserStore();
 const bio = ref(null);
 const loading = ref(false);
@@ -82,12 +88,6 @@ async function submitBio() {
     loading.value = false;
   }
 }
-
-const menuOptions = ref([
-  { name: "View", path: "/profile/about" },
-  { name: "Edit", path: "/profile/edit" },
-  { name: "Profile", path: "/profile/editProfilePhoto" },
-]);
 </script>
 
 <style lang="scss" scoped></style>

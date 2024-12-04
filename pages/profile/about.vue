@@ -26,7 +26,6 @@
           </span>
         </li>
       </template>
-      <!-- <ProfileInfo :infoDetails="item" :info="item.info" /> -->
     </div>
   </div>
 </template>
@@ -41,13 +40,11 @@ definePageMeta({
 
 const store = useAuthStore();
 
-console.log(store.loginUser, "loginusuus");
-
 const UserStore = useUserStore();
 
 const userDetails = computed(() => store.getLoggedInUser);
 
-console.log(userDetails.value, "userde");
+// console.log(userDetails.value, "userde");
 
 const menuOptions = ref([
   { name: "View", path: "/profile/about" },
@@ -57,7 +54,7 @@ const menuOptions = ref([
 
 onMounted(() => {
   UserStore.fetchBio();
-  console.log(UserStore.bio, "shshh");
+  // console.log(UserStore.bio, "shshh");
 });
 </script>
 

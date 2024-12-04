@@ -15,8 +15,6 @@
           { name: 'Jobs', path: '/jobs', icon: 'pi pi-briefcase' },
           { name: 'Shop', path: '/shop', icon: 'pi pi-cart-arrow-down' },
         ]"
-        :loginLink="'/'"
-        :loginText="'Logout'"
       />
     </div>
 

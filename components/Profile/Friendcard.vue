@@ -5,7 +5,7 @@
     >
       <div class="w-2/6 md:w-[2%5] lg:w-[19%] h-full">
         <img
-          :src="user.image"
+          :src="user?.image"
           alt=""
           class="object-cover relative w-full h-full z-10"
         />

@@ -88,10 +88,6 @@ const spinner = ref(false);
 const isUploading = ref(false);
 const previewImages = ref([]);
 
-onMounted(() => {
-  // console.log(AuthStore.loginUser, "loginuser");
-});
-
 const handleUpload = async (files) => {
   try {
     spinner.value = true;
@@ -123,7 +119,7 @@ const submitPost = async () => {
     const imageUrls = await Poststore.uploadFile(filesToUpload);
 
     post.value.image = imageUrls;
-    console.log(post.value);
+    // console.log(post.value);
 
     await Poststore.createPost(post.value);
     emit("close");

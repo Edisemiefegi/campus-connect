@@ -7,8 +7,6 @@
         :search="true"
         :enableScrollEffect="false"
         :navOptions="navOptions"
-        :loginLink="'/'"
-        :loginText="'Logout'"
       />
     </div>
 

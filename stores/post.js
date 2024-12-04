@@ -93,18 +93,36 @@ export const usePostStore = defineStore("post", {
     initUserPost() {
       try {
         const store = useAuthStore();
+        const userStore = useUserStore();
 
         const q = query(
           collection(db, "posts"),
           where("userid", "==", store.loginUser.id)
         );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const unsubscribe = onSnapshot(q, async (querySnapshot) => {
           const posts = [];
           querySnapshot.forEach((doc) => {
             posts.push(doc.data());
           });
+          // console.log(posts, "poo");
+
+          for (let post of posts) {
+            try {
+              const user = await userStore.getUserById(post.userid);
+              post.user = user; // Add the user data to the post
+              // console.log(post.userid, user, "user data added to post");
+            } catch (error) {
+              console.error(
+                "Error fetching user data for post:",
+                post.userid,
+                error
+              );
+            }
+          }
 
           this.Userposts = posts;
+          console.log(this.Userposts, "yeyeyy");
+
           // console.log("posts ", posts, this.Userposts);
         });
       } catch (error) {

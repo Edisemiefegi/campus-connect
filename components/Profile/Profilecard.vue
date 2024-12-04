@@ -9,7 +9,7 @@
         <i class="pi pi-user text-white" v-if="!user?.image"></i>
         <img
           v-else
-          :src="user?.image"
+          :src="user?.image?.url"
           class="w-full h-full object-cover rounded-full"
           alt=""
         />
@@ -29,7 +29,7 @@ const props = defineProps({
   },
 });
 
-console.log(props.user, "user");
+// console.log(props.user, "user");
 </script>
 
 <style lang="scss" scoped></style>

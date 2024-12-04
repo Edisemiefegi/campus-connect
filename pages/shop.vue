@@ -1,5 +1,7 @@
 <template>
-  <div>jobs</div>
+  <div>
+    <p class="text-2xl text-center py-10">shop page Coming Soon..</p>
+  </div>
 </template>
 
 <script setup>

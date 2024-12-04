@@ -33,13 +33,8 @@ import { useAuthStore } from "~/stores/authentication";
 const Poststore = usePostStore();
 const AuthStore = useAuthStore();
 const myPosts = computed(() => Poststore.Userposts);
-// onMounted(() => {
-//   Poststore.initUserPost();
 
-//   console.log(Poststore.initUserPost(), "ostskk");
-// });
-
-console.log(myPosts.value, "jjj");
+// console.log(myPosts.value, "jjj");
 </script>
 
 <style lang="scss" scoped></style>

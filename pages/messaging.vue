@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>messaging</p>
+    <p class="text-2xl text-center py-10">messaging page Coming Soon..</p>
   </div>
 </template>
 

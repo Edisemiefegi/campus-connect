@@ -11,30 +11,16 @@ definePageMeta({
   layout: "profile",
 });
 
-import { ref, defineProps } from "vue";
-import { useUserStore } from "~/stores/user";
-
 import { usePostStore } from "~/stores/post";
 import { useAuthStore } from "~/stores/authentication";
 
 const Poststore = usePostStore();
 const AuthStore = useAuthStore();
 
-// const user = ref(null);
-// const userPosts = ref(null);
-
-// onMounted(() => {
-//   Poststore.initUserPost();
-//   Poststore.getFavPost();
-
-//   console.log(Poststore.initUserPost(), "osts");
-// });
-
 const loggedinUser = computed(() => AuthStore.getLoggedInUser);
 const myPosts = computed(() => Poststore.Userposts);
 
-console.log(myPosts.value, "my post");
-console.log(loggedinUser.value, "my user");
+// console.log(myPosts.value, "my post");
 </script>
 
 <style lang="scss" scoped></style>

@@ -128,7 +128,7 @@ const itemsPerPage = 4;
 const totalPages = computed(() =>
   Math.ceil(formInput.value.length / itemsPerPage)
 );
-console.log(totalPages.value);
+// console.log(totalPages.value);
 
 const visibleFields = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
@@ -160,7 +160,7 @@ const clearData = () => {
 };
 
 const SignUpUser = async () => {
-  console.log(formData.value);
+  // console.log(formData.value);
   try {
     loading.value = true;
     const payload = { ...formData.value };

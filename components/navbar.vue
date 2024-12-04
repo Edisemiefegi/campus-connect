@@ -42,22 +42,23 @@
           >
             <i class="pi pi-globe text-white text-sm md:text-2xl"></i>
           </div>
+
           <!-- Showcommunity component on hover -->
           <div @mouseleave="showList = false" v-if="showList">
             <Showcommunity />
           </div>
         </div>
+
         <!-- nav options -->
         <div class="flex items-center gap-2 w-3/5">
           <div
             v-for="item in navOptions"
             :key="item"
             class="text-white w-full relative cursor-pointer"
-            @click="handlePostModal(item)"
           >
             <ul class="">
               <li class="text-white text-sm cursor-pointer group">
-                <RouterLink :to="item?.path">
+                <div @click="handleRoute(item)">
                   <div class="flex flex-col justify-center items-center">
                     <i
                       :class="[
@@ -69,7 +70,6 @@
                       class="text-white text-sm md:text-2xl group-hover:text-light"
                     ></i>
                     <span
-                      v-if="isDisplayed"
                       :class="[
                         isActive(item)
                           ? 'font-bold border-b border-green-500'
@@ -80,28 +80,22 @@
                       {{ item.name }}
                     </span>
                   </div>
-                </RouterLink>
-
-                <!-- Showcommunity component on hover -->
-                <!-- <div
-                  @mouseleave="showList = false"
-                  v-if="item.name === 'Community' && showList"
-                >
-                  <Showcommunity />
-                </div> -->
+                </div>
               </li>
             </ul>
           </div>
         </div>
 
         <!-- post section -->
-        <div class="relative" v-if="isDisplayed">
+        <div class="relative mr-3" v-if="isDisplayed">
           <div
             @click="showPostModal = true"
             class="flex flex-col items-center justify-center cursor-pointer"
           >
             <i class="pi pi-pencil text-white text-sm md:text-2xl"></i>
+            <span class="text-white text-sm hidden lg:block">Create</span>
           </div>
+
           <!-- show post modal -->
           <keep-alive>
             <div v-if="showPostModal">
@@ -171,6 +165,7 @@ const showPostModal = ref(false);
 const store = useAuthStore();
 
 const router = useRouter();
+const route = useRoute();
 const user = computed(() => store.getLoggedInUser);
 
 // Prop to toggle scroll effect
@@ -180,11 +175,10 @@ const props = defineProps({
 
     default: [
       { name: "Home", path: "/", icon: "pi pi-home" },
-      // { name: "Community", path: "/", icon: "pi pi-globe" },
       { name: "About", path: "/about", icon: "pi pi-volume-up" },
       { name: "Contact Us", path: "/contact", icon: "pi pi-phone" },
       { name: "FAQ(s)", path: "/faq", icon: "pi pi-question-circle" },
-    ], // Array of navbar options (label and link)
+    ],
   },
   search: {
     type: Boolean,
@@ -193,15 +187,15 @@ const props = defineProps({
 
   loginLink: {
     type: String,
-    default: "/auth/login", // Default login link
+    default: "/auth/login",
   },
   loginText: {
     type: String,
-    default: "Login", // Default login button text
+    default: "Login",
   },
   enableScrollEffect: {
     type: Boolean,
-    default: true, // Default to enabling scroll effect
+    default: true,
   },
   isDisplayed: {
     type: Boolean,
@@ -209,22 +203,9 @@ const props = defineProps({
   },
 });
 
-// Handle mouse hover over "Community" option
-// const handleMouseOver = (option) => {
-//   if (option.name === "Community") {
-//     showList.value = true;
-//   }
-// };
-
-// Handle click on  "create post " option
-const handlePostModal = (option) => {
-  console.log(option, "option");
-
-  // if (option.name === "Post new") {
-  //   showPostModal.value = true;
-  // } else {
-  router.push({ path: `${option.path}` });
-  // }
+const handleRoute = (item) => {
+  router.push(item.path);
+  console.log(item.path, "handleroute");
 };
 
 // Toggle modal visibility
@@ -239,10 +220,7 @@ const closeProfileModal = () => {
 
 // Function to check active route
 const isActive = (item) => {
-  if (process.client) {
-    return window.location.pathname === item.path;
-  }
-  return false; // Default to false on the server-side
+  return route.path === item.path;
 };
 
 const checkScroll = () => {
@@ -251,7 +229,7 @@ const checkScroll = () => {
 
 const navbarClasses = computed(() => {
   if (!props.enableScrollEffect) {
-    return "bg-primary shadow-lg border-b-0"; // Fixed style without scroll effect
+    return "bg-primary shadow-lg border-b-0";
   }
   return {
     "bg-transparent border-b border-gray-200": !isScrolled.value,
@@ -272,8 +250,4 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
-/* .router-link-exact-active {
-  color: #0abf54;
-} */
-</style>
+<style scoped></style>

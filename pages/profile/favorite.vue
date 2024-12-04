@@ -11,16 +11,11 @@ definePageMeta({
   layout: "profile",
 });
 
-import { ref, defineProps } from "vue";
-
 import { usePostStore } from "~/stores/post";
 import { useAuthStore } from "~/stores/authentication";
 
 const Poststore = usePostStore();
 const AuthStore = useAuthStore();
-
-// const user = ref(null);
-// const userPosts = ref(null);
 
 onMounted(() => {
   Poststore.getFavPost();
@@ -30,8 +25,7 @@ onMounted(() => {
 const loggedinUser = computed(() => AuthStore.getLoggedInUser);
 const myPosts = computed(() => Poststore.favPosts);
 
-console.log(myPosts.value, "my post");
-console.log(loggedinUser.value, "my user");
+// console.log(myPosts.value, "my post");
 </script>
 
 <style lang="scss" scoped></style>

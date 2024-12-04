@@ -3,13 +3,21 @@
     <div>
       <div class="w-full rounded-lg flex">
         <div
+          :class="
+            route.path == item.path
+              ? 'border-b-4 border-b-green-900 text-900 font-bold'
+              : ''
+          "
           v-for="item in menuOptions"
-          :key="item.path"
+          :key="item"
           class="w-[30%] md:w-[20%] py-4 border-r bg-white text-center"
         >
-          <RouterLink :to="item.path" class="py-4 bg-white hover:text-gray-600">
+          <button
+            @click="handleRoute(item)"
+            class="bg-white hover:text-gray-600"
+          >
             {{ item.name }}
-          </RouterLink>
+          </button>
         </div>
       </div>
     </div>
@@ -31,12 +39,15 @@ const props = defineProps({
     ],
   },
 });
+const router = useRouter();
+const route = useRoute();
+
+const handleRoute = (item) => {
+  router.push(item.path);
+  console.log(route, "path");
+};
+
+console.log();
 </script>
 
-<style scoped>
-.router-link-exact-active {
-  border-bottom: 4px solid #183a37;
-  color: #183a37;
-  font-weight: bold;
-}
-</style>
+<style scoped></style>
