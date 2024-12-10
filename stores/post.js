@@ -121,7 +121,7 @@ export const usePostStore = defineStore("post", {
           }
 
           this.Userposts = posts;
-          console.log(this.Userposts, "yeyeyy");
+          // console.log(this.Userposts, "yeyeyy");
 
           // console.log("posts ", posts, this.Userposts);
         });
@@ -153,16 +153,16 @@ export const usePostStore = defineStore("post", {
 
       if (!post) return;
 
-      console.log(post, post.postid, "Post object");
+      // console.log(post, post.postid, "Post object");
 
       const docRef = doc(db, "posts", post.postid);
 
       if (post.likedBy.includes(userid)) {
         post.likedBy = post.likedBy.filter((id) => id !== userid);
-        console.log(post.likedBy, "remove like");
+        // console.log(post.likedBy, "remove like");
       } else {
         post.likedBy.push(userid);
-        console.log(post.likedBy, "add like");
+        // console.log(post.likedBy, "add like");
       }
 
       const likes = post.likedBy;
@@ -222,7 +222,7 @@ export const usePostStore = defineStore("post", {
 
           post.push(data);
         });
-        console.log(post, "fav");
+        // console.log(post, "fav");
 
         this.favPosts = post;
         // console.log(this.favPosts, "favv");

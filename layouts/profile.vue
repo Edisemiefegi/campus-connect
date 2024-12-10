@@ -7,7 +7,7 @@
         :enableScrollEffect="false"
         :navOptions="[
           { name: 'Home', path: '/dashboard', icon: 'pi pi-home' },
-          { name: 'Messaging', icon: 'pi pi-comments' },
+          { name: 'Messaging', path: '/messaging', icon: 'pi pi-comments' },
           { name: 'Notification', path: '/notifications', icon: 'pi pi-bell' },
           { name: 'Forum', path: '/forums', icon: 'pi pi-users' },
           { name: 'Jobs', path: '/jobs', icon: 'pi pi-briefcase' },
@@ -20,6 +20,7 @@
         <div class="w-5/6 mx-auto pt-20 pb-20 flex flex-col gap-10">
           <announcement
             :postCount="myPosts?.length"
+            :friendsCount="loggedinUser?.friends?.length"
             bgClass="bg-secondary"
             showProfile
             layoutClass="flex-row"

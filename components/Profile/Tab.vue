@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <div class="w-full rounded-lg flex">
+      <div class="w-full rounded-lg flex flex-wrap">
         <div
           :class="
             route.path == item.path
@@ -10,11 +10,11 @@
           "
           v-for="item in menuOptions"
           :key="item"
-          class="w-[30%] md:w-[20%] py-4 border-r bg-white text-center"
+          class="w-fit px-3 py-4 border-r bg-white text-center"
         >
           <button
             @click="handleRoute(item)"
-            class="bg-white hover:text-gray-600"
+            class="bg-white text-smv hover:text-gray-600"
           >
             {{ item.name }}
           </button>
@@ -35,7 +35,7 @@ const props = defineProps({
       { name: "Favorites", path: "/profile/favorite" },
       { name: "Friends", path: "/profile/friends" },
       { name: "About", path: "/profile/about" },
-      { name: "Settings", path: "/profile/setting" },
+      { name: "My-Forum", path: "/profile/forum" },
     ],
   },
 });

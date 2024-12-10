@@ -1,11 +1,23 @@
 <template>
   <div class="bg-white w-full h-fit rounded-lg p-8 flex flex-col gap-5">
-    <div class="flex justify-between">
+    <div class="flex justify-between relative">
       <div>
         <ProfileProfilecard :user="post?.user" />
         <p class="text-sm text-gray-400 mt-2">{{ formattedDate }}</p>
       </div>
-      <i class="pi pi-ellipsis-v"></i>
+      <i class="pi pi-ellipsis-v cursor-pointer" @click="show = true"></i>
+      <div v-if="show" class="absolute right-4 mt-4 z-20">
+        <div class="relative">
+          <Button @click="handleFriends" :class="follow ? 'bg-red-500' : ''">
+            <span v-if="!follow">Friend</span>
+            <span v-else>Unfriend</span></Button
+          >
+          <i
+            class="pi pi-times text-xs absolute -top-5 right-1 cursor-pointer"
+            @click="show = false"
+          ></i>
+        </div>
+      </div>
     </div>
     <p>
       {{ post?.caption }}
@@ -61,9 +73,11 @@ import { ref, defineProps } from "vue";
 import moment from "moment";
 import { usePostStore } from "~/stores/post";
 import { useAuthStore } from "~/stores/authentication";
+import { useUserStore } from "~/stores/user";
 
 const store = usePostStore();
 const Authstore = useAuthStore();
+const userStore = useUserStore();
 
 const props = defineProps({
   post: {
@@ -71,6 +85,7 @@ const props = defineProps({
     required: true,
   },
 });
+const show = ref(false);
 
 // console.log(props.post, "ddjdj");
 
@@ -95,8 +110,6 @@ const fav = computed(() => {
   return store?.favPosts?.find((e) => e.post.postid === props.post.postid);
 });
 
-// console.log(fav.value, "fave");
-
 const likeFunc = async () => {
   await store.likesfunc(props.post, Authstore.loginUser.id);
 };
@@ -105,6 +118,15 @@ const favFunc = async () => {
   // console.log(store.favPosts, "sjjd");
 
   await store.favPostfunc(props.post, Authstore.loginUser.id);
+};
+
+const follow = computed(() => {
+  return Authstore?.loginUser?.friends?.includes(props?.post?.userid);
+});
+
+const handleFriends = async () => {
+  console.log(follow.value, "friends");
+  await userStore.handleFriendsFunc(props.post.userid);
 };
 </script>
 

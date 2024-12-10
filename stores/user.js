@@ -118,6 +118,60 @@ export const useUserStore = defineStore("user", {
         throw error;
       }
     },
+
+    async handleFriendsFunc(userid) {
+      if (!userid) return;
+      try {
+        const store = useAuthStore();
+        const user = store.loginUser;
+        if (user.id === userid) {
+          console.error("You cannot follow yourself!");
+          return;
+        }
+        const docRef = doc(db, "users", user.id);
+        if (user.friends.includes(userid)) {
+          user.friends = user.friends.filter((id) => id !== userid);
+          console.log(user.friends, "remove friend");
+        } else {
+          user.friends.push(userid);
+          console.log(user.friends, "add friend");
+        }
+        const friend = user.friends;
+        console.log(friend, "friensnnsn");
+
+        await updateDoc(docRef, {
+          friends: friend,
+        });
+      } catch (error) {}
+    },
+
+    async getallfriends() {
+      const store = useAuthStore();
+      const user = store.loginUser;
+
+      if (!user.friends || user.friends.length === 0) {
+        console.log("No friends found");
+        return [];
+      }
+
+      try {
+        const friendsDetails = await Promise.all(
+          user.friends.map((friendId) => {
+            console.log(friendId, "id, ");
+
+            return this.getUserById(friendId);
+          })
+        );
+
+        console.log(friendsDetails, "fd");
+
+        // Filter out null values in case some IDs don't resolve to valid users
+        return friendsDetails.filter((details) => details !== null);
+      } catch (error) {
+        console.error("Error fetching friends' details:", error);
+        return [];
+      }
+    },
     // async deleteFunc(fileUrl) {
     //   console.log(fileUrl, "ur;s");
     //   const fileRef = ref(storage, fileUrl);
