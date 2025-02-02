@@ -26,7 +26,7 @@
         </div>
 
         <div
-          v-for="forum in forumData"
+          v-for="forum in forums"
           :key="forum.id"
           class="grid grid-cols-4 text-gray-400"
         >
@@ -35,7 +35,7 @@
           >
             <div class="w-12 h-12 rounded-full overflow-hidden">
               <img
-                :src="forum.image"
+                :src="forum?.image"
                 alt=""
                 class="w-full h-full object-cover"
               />
@@ -51,9 +51,17 @@
             </div>
           </div>
           <p class="p-6 border-b border-r">
-            {{ forum.topics?.length }}
+            {{ forum?.topics?.length }}
           </p>
-          <p class="p-6 border-b">{{ forum.posts }}</p>
+          <p class="p-6 border-b">
+            {{
+              forum.topics.reduce(
+                (total, topic) =>
+                  total + (topic.posts ? topic.posts.length : 0),
+                0
+              )
+            }}
+          </p>
         </div>
       </div>
     </div>
@@ -63,45 +71,39 @@
 <script setup>
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useForumStore } from "~/stores/forum";
 
 const router = useRouter();
+const store = useForumStore();
 
 definePageMeta({
   layout: "forum",
 });
 
-const forumData = [
-  {
-    id: 1,
-    image: "/me.jpg",
+const forums = ref([]);
+const forumData = computed(() => store.userForums);
 
-    name: "GeneralDiscussion ",
-    description: "short description",
-    topics: [
-      { id: 1, name: "Introduction", posts: 15 },
-      { id: 2, name: "Community Guidelines", posts: 8 },
-    ],
-    posts: 23,
-  },
-  {
-    id: 2,
-    image: "/me.jpg",
+onMounted(async () => {
+  store.initUserForum();
 
-    name: "Technical Support",
-    description: "short description dhdhd ddjjjd djjdjdj djdjdj djdjdj jdjdj",
+  forums.value = await Promise.all(
+    forumData.value.map(async (f) => {
+      const topics = await store.fetchTopicByForumid(f.forumid);
+      return {
+        ...f,
+        topics,
+      };
+    })
+  );
 
-    topics: [
-      { id: 1, name: "Troubleshooting", posts: 45 },
-      { id: 2, name: "FAQ", posts: 32 },
-    ],
-    posts: 77,
-  },
-];
+  console.log(forums.value, "footossi");
+});
 
 const goToForum = (forum) => {
   console.log(forum, "active forum");
+  console.table(forum, "table");
 
-  router.push(`/forums/forum/${forum.id}`);
+  router.push(`/forums/forum/${forum.forumid}`);
 };
 </script>
 

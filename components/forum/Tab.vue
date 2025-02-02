@@ -7,9 +7,6 @@
 </template>
 
 <script setup>
-definePageMeta({
-  layout: "profile",
-});
 import { useAuthStore } from "~/stores/authentication";
 
 const store = useAuthStore();
@@ -18,9 +15,9 @@ const user = computed(() => {
   store.loginUser;
 });
 const menuOptions = ref([
-  { name: "Add ", path: "/profile/about" },
-  { name: "Forums created", path: "/profile/edit" },
-  { name: "Topics created", path: "/profile/editProfilePhoto" },
+  { name: "Add ", path: "/profile/forum" },
+  { name: "Forums created", path: "/profile/forum/myforums" },
+  { name: "Topics created", path: "/profile/forum/mytopics" },
   { name: "Replies created", path: "/profile/editProfilePhoto" },
 ]);
 </script>

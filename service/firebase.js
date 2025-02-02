@@ -20,6 +20,7 @@ import {
   onSnapshot,
   getDocs,
   deleteDoc,
+  arrayUnion,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -57,4 +58,5 @@ export {
   getDocs,
   deleteDoc,
   signOut,
+  arrayUnion,
 };

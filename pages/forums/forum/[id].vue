@@ -2,8 +2,8 @@
   <div class="">
     <div class="font-semibold text-gray-500 mb-5">
       <p>
-        There are {{ activeForum.topics.length }} topics and
-        {{ activeForum.posts }} in this Forum
+        There are {{ topics?.length }} topics and {{ topics?.posts?.length }} in
+        this Forum
       </p>
     </div>
 
@@ -16,33 +16,32 @@
       </div>
 
       <div
-        v-for="topic in activeForum.topics"
-        :key="topic.id"
-        @click="goToTopic(topic.id)"
+        v-for="topic in topics"
+        :key="topic.topicid"
+        @click="goToTopic(topic.topicid)"
         class="grid grid-cols-3 text-gray-400"
       >
         <div
           class="p-6 col-span-2 border-b border-r flex flex-col md:flex-row gap-2"
         >
-          <div class="w-12 h-12 rounded-full overflow-hidden">
+          <!-- <div class="w-12 h-12 rounded-full overflow-hidden">
             <img
-              :src="activeForum.image"
+              :src="topic?.image"
               alt=""
               class="w-full h-full object-cover"
             />
-          </div>
+          </div> -->
           <div class="md:w-3/4 w-full">
             <p
               class="font-semibold cursor-pointer text-black mb-2 text-bold"
               @click="goToTopic(topic)"
             >
-              {{ topic.name }}
+              {{ topic.topic }}
             </p>
-            <p>{{ topic.description }}</p>
           </div>
         </div>
 
-        <p class="p-6 border-b">{{ topic.posts }}</p>
+        <p class="p-6 border-b">{{ topic?.posts?.length }}</p>
       </div>
     </div>
   </div>
@@ -51,65 +50,25 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, computed } from "vue";
+import { useForumStore } from "~/stores/forum";
+
+const store = useForumStore();
 
 definePageMeta({
   layout: "forum",
 });
 const route = useRoute();
 const router = useRouter();
+const forumId = route.params.id;
 
-const forumData = ref([
-  {
-    id: 1,
-    image: "/me.jpg",
+const topics = ref([]);
 
-    name: "GeneralDiscussion ",
-    description: "short description",
-    topics: [
-      {
-        id: 1,
-        name: "Introduction",
-        posts: 15,
-        description: "short description",
-      },
-      {
-        id: 2,
-        name: "Community Guidelines",
-        posts: 8,
-        description: "short description",
-      },
-    ],
-    posts: 23,
-  },
-  {
-    id: 2,
-    image: "/me.jpg",
-
-    name: "Technical Support",
-    description: "short description dhdhd ddjjjd djjdjdj djdjdj djdjdj jdjdj",
-
-    topics: [
-      {
-        id: 1,
-        name: "Troubleshooting",
-        posts: 45,
-        description: "short description",
-      },
-      { id: 2, name: "FAQ", posts: 32, description: "short description" },
-    ],
-    posts: 77,
-  },
-]);
-
-const activeForum = computed(() => {
-  return forumData.value.find(
-    (element) => element.id === Number(route.params.id)
-  );
+onMounted(async () => {
+  topics.value = await store.fetchTopicByForumid(forumId);
+  console.log(topics.value, "fhhfh");
 });
 
 const goToTopic = (topic) => {
-  router.push(`/forums/topic/${topic.id}`);
+  router.push(`/forums/topic/${topic}`);
 };
-
-console.log(activeForum.value, activeForum.value.topics, "data");
 </script>

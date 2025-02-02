@@ -7,9 +7,9 @@
       <p>Posts</p>
     </div>
     <div class="bg-gray-50 p-6">
-      <ProfileProfilecard />
+      <ProfileProfilecard :user="user" />
     </div>
-    <forumPostCard :post="topicData" />
+    <forumPostCard :post="posts" />
   </div>
 </template>
 
@@ -19,40 +19,23 @@ import { ref, onMounted, computed } from "vue";
 definePageMeta({
   layout: "forum",
 });
+import { useForumStore } from "~/stores/forum";
+import { useUserStore } from "~/stores/user";
 
 const route = useRoute();
 
-// const activeTopic = computed(() => {
-//   return forumData.value.find(
-//     (element) => element.id === Number(route.params.id)
-//   );
-// });
+const store = useForumStore();
+const userStore = useUserStore();
+const topicId = route.params.id;
 
-const topicData = ref({
-  id: 1,
-  name: "Introduction",
-  posts: [
-    {
-      user: "",
-      Subheading: "sub heading",
-      content:
-        "lorem loreme kjeidj sjsj sjsj jsjs sj sjsjjs sjsjs sjjsjs sjjsj",
-      comments: 4,
-      image: "/me.jpg",
-      time: "May 31, 2024 at 5:55am",
-    },
-    {
-      user: "",
-      Subheading: "sub heading",
-      content:
-        " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis saepe placeat labore mollitia voluptas illum fuga distinctio pariatur maiores! Atque dolorum iure dolores odio, at quia magnam consequuntur condignissimos necessitatibus cumque enim provident qui, optio aperiam,nihil perspiciatis! Consectetur?",
-      comments: 4,
-      image: "",
-      time: "May 31, 2024 at 5:55am",
-    },
-  ],
-  description: "short description",
+console.log(topicId, "id");
+
+const posts = ref([]);
+const user = ref(null);
+
+onMounted(async () => {
+  posts.value = await store.fetchPostsByTopicid(topicId);
+  user.value = await userStore.getUserById("nnZlISMmoXXir6vUPrqGXdXZiI03");
+  console.log(posts.value, "fhhfhpost");
 });
-
-console.log(topicData.value.posts);
 </script>
