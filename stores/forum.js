@@ -97,6 +97,20 @@ export const useForumStore = defineStore("forum", {
         console.log(error.message);
       }
     },
+
+    async getAllForum() {
+      const q = query(collection(db, "forums"));
+      const forums = [];
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        forums.push(doc.data());
+        this.allForums.push(doc.data());
+        // doc.data() is never undefined for query doc snapshots
+      });
+      this.allForums = forums;
+      console.log(this.allForums, "text");
+    },
     initUserTopic() {
       try {
         const store = useAuthStore();

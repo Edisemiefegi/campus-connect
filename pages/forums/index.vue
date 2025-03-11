@@ -81,10 +81,13 @@ definePageMeta({
 });
 
 const forums = ref([]);
-const forumData = computed(() => store.userForums);
+const forumData = computed(() => store.allForums);
 
 onMounted(async () => {
-  store.initUserForum();
+  // store.initUserForum();
+
+  await store.getAllForum();
+  console.log(forumData.value, "froeuu ");
 
   forums.value = await Promise.all(
     forumData.value.map(async (f) => {
