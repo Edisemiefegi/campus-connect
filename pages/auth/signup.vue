@@ -73,6 +73,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useAuthStore } from "~/stores/authentication";
+import { showToast } from "@/utils";
 
 definePageMeta({
   layout: "auth",
@@ -165,11 +166,16 @@ const SignUpUser = async () => {
     loading.value = true;
     const payload = { ...formData.value };
     await authstore.signupFunc(payload);
+    showToast("success", "Signup successfully.");
+
     router.push({ path: "/dashboard" });
     clearData();
   } catch (error) {
+    error.message.split("(")[1]?.split(")")[0] ||
+      "this credentials has already been used.";
+
     console.log(error.message);
-    throw error;
+    throw new Error(error.message);
   } finally {
     loading.value = false;
   }

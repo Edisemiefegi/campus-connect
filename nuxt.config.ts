@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   css: ['primeicons/primeicons.css'],
   
   plugins: [{ src: '@/plugins/aos',    mode: 'client' },  { src: '@/plugins/pinia', mode: 'client' },  '~/plugins/moment.js',],
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt',],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', ],
 
 
 })

@@ -94,7 +94,7 @@ export const useAuthStore = defineStore("authentication", {
         // console.log(this.loginUser, "register");
       } catch (error) {
         console.log(error.message);
-        throw error;
+        throw new Error(error.message);
       }
     },
 
@@ -122,6 +122,7 @@ export const useAuthStore = defineStore("authentication", {
         }
       } catch (error) {
         console.log(error.message);
+        throw new Error(error.message);
       }
     },
 

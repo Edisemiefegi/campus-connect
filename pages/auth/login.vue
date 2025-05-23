@@ -48,6 +48,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useAuthStore } from "~/stores/authentication";
+import { showToast } from "@/utils";
 
 definePageMeta({
   layout: "auth",
@@ -67,11 +68,20 @@ const LoginUser = async () => {
     loading.value = true;
     const payload = { ...form.value };
     await authstore.loginFunc(payload);
+    showToast("success", "Login successfully.");
+    // $toast.success("Login successfull!");
     router.push({ path: "/dashboard" });
     form.value.email = "";
     form.value.password = "";
   } catch (error) {
-    console.log(error.message);
+    showToast(
+      "error",
+      error.message.split("(")[1]?.split(")")[0] || "Invalid login credentials."
+    );
+    console.log(error.message, "error auth");
+
+    throw new Error(error.message);
+    // $toast.error(error.message);
   } finally {
     loading.value = false;
   }

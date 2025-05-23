@@ -2,12 +2,12 @@
   <main class="h-fit">
     <!-- main section -->
     <othersLandingmainsection>
-      <h1 class="font-bold text-4xl sm:text-5xl">Campus Community</h1>
+      <h1 class="font-bold text-4xl sm:text-5xl">Campus Connect</h1>
       <p>
         Having real social contacts can sometimes be difficult. with campus
         connect everything becomes much simpler!
       </p>
-      <p class="font-bold text-4xl">10,84,222</p>
+      <p class="font-bold text-4xl">10,842,22</p>
       <p>Connected People</p>
 
       <Button
