@@ -34,108 +34,115 @@
           </div>
         </div>
 
-        <!-- commuinty -->
-        <div class="relative" v-if="!isDisplayed">
-          <div
-            @mouseover="showList = true"
-            class="flex flex-col items-center justify-center cursor-pointer"
-          >
-            <i class="pi pi-globe text-white text-sm md:text-2xl"></i>
-          </div>
-
-          <!-- Showcommunity component on hover -->
-          <div @mouseleave="showList = false" v-if="showList">
-            <Showcommunity />
-          </div>
-        </div>
-
-        <!-- nav options -->
-        <div class="flex items-center gap-2 w-3/5">
-          <div
-            v-for="item in navOptions"
-            :key="item"
-            class="text-white w-full relative cursor-pointer"
-          >
-            <ul class="">
-              <li class="text-white text-sm cursor-pointer group">
-                <div @click="handleRoute(item)">
-                  <div class="flex flex-col justify-center items-center">
-                    <i
-                      :class="[
-                        item?.icon,
-                        isActive(item)
-                          ? 'font-bold border-b border-green-500 lg:border-none'
-                          : '',
-                      ]"
-                      class="text-white text-sm md:text-2xl group-hover:text-light"
-                    ></i>
-                    <span
-                      :class="[
-                        isActive(item)
-                          ? 'font-bold border-b border-green-500'
-                          : '',
-                        'mt-1 hidden lg:block group-hover:text-light',
-                      ]"
-                    >
-                      {{ item.name }}
-                    </span>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- post section -->
-        <div class="relative mr-3" v-if="isDisplayed">
-          <div
-            @click="showPostModal = true"
-            class="flex flex-col items-center justify-center cursor-pointer"
-          >
-            <i class="pi pi-pencil text-white text-sm md:text-2xl"></i>
-            <span class="text-white text-sm hidden lg:block">Create</span>
-          </div>
-
-          <!-- show post modal -->
-          <keep-alive>
-            <div v-if="showPostModal">
-              <PostsCreatePost @close="showPostModal = false" />
-            </div>
-          </keep-alive>
-        </div>
-
-        <!-- Profile Section -->
-        <div class="relative" v-if="isDisplayed">
-          <div
-            @click="showProfileModal = true"
-            class="flex flex-col items-center justify-center cursor-pointer"
-          >
-            <img
-              v-if="user?.image"
-              :src="user?.image?.url"
-              alt="Profile"
-              class="md:w-8 md:h-8 w-6 h-6 rounded-full"
-            />
+        <div
+          :class="justifyCenter ? 'justify-center' : 'justify-end'"
+          class="flex gap-4 w-full"
+        >
+          <!-- commuinty -->
+          <div class="relative" v-if="!isDisplayed">
             <div
-              v-else
-              class="md:w-8 md:h-8 rounded-full w-6 h-6 flex justify-center items-center"
+              @click="toggleList"
+              @mouseenter="!isMobile && (showList = true)"
+              @mouseleave="!isMobile && (showList = false)"
+              class="flex flex-col items-center justify-center cursor-pointer"
             >
-              <i class="pi pi-user text-white"></i>
+              <i class="pi pi-globe text-white text-sm md:text-2xl"></i>
             </div>
-            <span class="text-white text-sm hidden lg:block">Me</span>
+
+            <!-- Showcommunity component on hover -->
+            <div v-if="showList">
+              <Showcommunity />
+            </div>
           </div>
 
-          <!-- Profile Modal -->
-          <ProfileViewProfile
-            v-if="showProfileModal"
-            @close="closeProfileModal"
-          />
-          <!-- Modal Overlay (for closing modal when clicking outside) -->
-          <div
-            v-if="showProfileModal"
-            @click="closeProfileModal"
-            class="fixed inset-0 bg-black opacity-50 z-20"
-          ></div>
+          <!-- nav options -->
+          <div class="flex items-center gap-1 md:gap-3 w-3/5">
+            <div
+              v-for="item in navOptions"
+              :key="item"
+              class="text-white w-full relative cursor-pointer"
+            >
+              <ul class="">
+                <li class="text-white text-sm cursor-pointer group">
+                  <div @click="handleRoute(item)">
+                    <div class="flex flex-col justify-center items-center">
+                      <i
+                        :class="[
+                          item?.icon,
+                          isActive(item)
+                            ? 'font-bold border-b border-green-500 lg:border-none'
+                            : '',
+                        ]"
+                        class="text-white text-sm md:text-2xl group-hover:text-light"
+                      ></i>
+                      <span
+                        :class="[
+                          isActive(item)
+                            ? 'font-bold border-b border-green-500'
+                            : '',
+                          'mt-1 hidden lg:block group-hover:text-light',
+                        ]"
+                      >
+                        {{ item.name }}
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- post section -->
+          <div class="relative flex items-center" v-if="isDisplayed">
+            <div
+              @click="showPostModal = true"
+              class="flex flex-col items-center justify-center cursor-pointer"
+            >
+              <i class="pi pi-pencil text-white text-sm md:text-2xl"></i>
+              <span class="text-white text-sm hidden lg:block">Create</span>
+            </div>
+
+            <!-- show post modal -->
+            <keep-alive>
+              <div v-if="showPostModal">
+                <PostsCreatePost @close="showPostModal = false" />
+              </div>
+            </keep-alive>
+          </div>
+
+          <!-- Profile Section -->
+          <div class="relative" v-if="isDisplayed">
+            <div
+              @click="showProfileModal = true"
+              class="flex flex-col items-center justify-center cursor-pointer"
+            >
+              <img
+                v-if="user?.image"
+                :src="user?.image?.url"
+                alt="Profile"
+                class="md:w-8 md:h-8 w-6 h-6 rounded-full"
+              />
+              <div
+                v-else
+                class="md:w-8 md:h-8 rounded-full w-6 h-6 flex justify-center items-center"
+              >
+                <i class="pi pi-user text-white"></i>
+              </div>
+              <span class="text-white text-sm hidden lg:block">Me</span>
+            </div>
+
+            <!-- Profile Modal -->
+            <ProfileViewProfile
+              v-if="showProfileModal"
+              @close="closeProfileModal"
+            />
+            <!-- Modal Overlay (for closing modal when clicking outside) -->
+            <div
+              v-if="showProfileModal"
+              @click="closeProfileModal"
+              class="fixed inset-0 bg-black opacity-50 z-20"
+            ></div>
+          </div>
         </div>
 
         <!-- btn -->
@@ -161,6 +168,7 @@ import { useAuthStore } from "~/stores/authentication";
 const showProfileModal = ref(false);
 const isScrolled = ref(false);
 const showList = ref(false);
+const isMobile = ref(false);
 const showPostModal = ref(false);
 const store = useAuthStore();
 
@@ -183,6 +191,10 @@ const props = defineProps({
   search: {
     type: Boolean,
     default: false,
+  },
+  justifyCenter: {
+    type: Boolean,
+    default: true,
   },
 
   loginLink: {
@@ -235,6 +247,25 @@ const navbarClasses = computed(() => {
     "bg-transparent border-b border-gray-200": !isScrolled.value,
     "bg-primary shadow-lg border-b-0": isScrolled.value,
   };
+});
+
+const toggleList = () => {
+  if (isMobile.value) {
+    showList.value = !showList.value;
+  }
+};
+
+const updateScreen = () => {
+  isMobile.value = window.innerWidth < 768; // md breakpoint
+};
+
+onMounted(() => {
+  updateScreen();
+  window.addEventListener("resize", updateScreen);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateScreen);
 });
 
 onMounted(() => {

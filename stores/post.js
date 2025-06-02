@@ -24,6 +24,7 @@ import {
 
 import { useAuthStore } from "~/stores/authentication";
 import { useUserStore } from "~/stores/user";
+import { useNotification } from "./notification";
 
 export const usePostStore = defineStore("post", {
   state: () => ({
@@ -150,6 +151,7 @@ export const usePostStore = defineStore("post", {
 
     async likesfunc(post, userid) {
       const store = useAuthStore();
+      // const notification = useNotification();
 
       if (!post) return;
 
@@ -163,6 +165,12 @@ export const usePostStore = defineStore("post", {
       } else {
         post.likedBy.push(userid);
         // console.log(post.likedBy, "add like");
+        // await notification.addNotification(
+        //   post.userid,
+        //   post,
+        //   "like",
+        //   "liked your post"
+        // );
       }
 
       const likes = post.likedBy;

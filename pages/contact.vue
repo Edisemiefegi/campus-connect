@@ -57,15 +57,15 @@
           </div>
           <div class="flex gap-2 items-center">
             <i class="pi pi-map-marker text-primary"></i>
-            <p class="font-semibold">598 Kazi Avenue, New York, NY23598</p>
+            <p class="font-semibold">598 Akra Avenue, Nigeria, 3598</p>
           </div>
           <div class="flex gap-2 items-center">
             <i class="pi pi-envelope text-primary"></i>
-            <p class="font-semibold">info@radiustheme.net</p>
+            <p class="font-semibold">info@campusconnect.net</p>
           </div>
           <div class="flex gap-2 items-center">
             <i class="pi pi-phone text-primary"></i>
-            <p class="font-semibold">(+123) 456 789 101</p>
+            <p class="font-semibold">(+234) 458 789 101</p>
           </div>
         </div>
       </div>

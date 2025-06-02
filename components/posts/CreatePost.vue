@@ -3,69 +3,75 @@
     @click.stop
     class="fixed inset-0 z-20 flex items-center w-screen h-screen cursor-pointer justify-center bg-black bg-opacity-20"
   >
-    <i
-      @click.stop="$emit('close')"
-      class="absolute top-4 right-4 m-4 cursor-pointer pi pi-times font-bold"
-    >
-    </i>
-    <div
-      class="bg-white mb-36 sm:mb-0 text-black overflow-hidden flex-col rounded-xl sm:w-4/12 w-5/6 flex font-medium h-96"
-    >
-      <p class="p-3 w-full text-center border-b text-black">Create new Post</p>
-      <div class="p-4 flex flex-col gap-6">
-        <textarea
-          v-model="post.caption"
-          placeholder="What's on your mind?"
-          class="border-b-2 border-black rounded-t-md p-2 bg-gray-200 outline-none w-full text-black"
-        />
+    <div class="relative w-2/3 lg:w-2/5 flex items-center justify-center">
+      <i
+        @click.stop="$emit('close')"
+        class="absolute -top-4 right-0 text-red-800 cursor-pointer pi pi-times font-bold"
+      >
+      </i>
+      <div
+        class="bg-white text-black overflow-hidden flex-col rounded-xl w-full flex font-medium h-96"
+      >
+        <p class="p-3 w-full text-center border-b text-black">
+          Create new Post
+        </p>
+        <div class="p-4 flex flex-col gap-6">
+          <textarea
+            v-model="post.caption"
+            placeholder="What's on your mind?"
+            class="border-b-2 border-black rounded-t-md p-2 bg-gray-200 outline-none w-full text-black"
+          />
 
-        <!-- Image Upload Input  -->
-        <div class="max-h-[32%]">
-          <uiUploadFile multiple @files="handleUpload">
-            <button
-              :disabled="isUploading"
-              class="bg-blue-400 p-2 text-white text-sm hover:bg-blue-500 rounded-md"
-            >
-              Select Photo
-            </button>
-          </uiUploadFile>
-
-          <div
-            v-if="spinner"
-            class="w-full h-full justify-center flex items-center"
-          >
-            <i class="pi pi-spin pi-spinner text-blue-600"></i>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 mt-3 h-full overflow-auto w-full">
-            <div
-              v-for="(image, index) in previewImages"
-              :key="index"
-              class="relative"
-            >
-              <img
-                :src="image.url"
-                alt="preview"
-                class="w-full max-h-[6rem] max-w-full object-contain rounded-lg"
-              />
-              <button :disabled="isUploading">
-                <i
-                  @click="removeImage(index)"
-                  class="absolute top-2 right-2 text-red-500 pi pi-times"
-                >
-                </i>
+          <!-- Image Upload Input  -->
+          <div class="max-h-[32%]">
+            <uiUploadFile multiple @files="handleUpload">
+              <button
+                :disabled="isUploading"
+                class="bg-blue-400 p-2 text-white text-sm hover:bg-blue-500 rounded-md"
+              >
+                Select Photo
               </button>
+            </uiUploadFile>
+
+            <div
+              v-if="spinner"
+              class="w-full h-full justify-center flex items-center"
+            >
+              <i class="pi pi-spin pi-spinner text-blue-600"></i>
+            </div>
+
+            <div
+              class="grid grid-cols-2 gap-4 mt-3 h-full overflow-auto w-full"
+            >
+              <div
+                v-for="(image, index) in previewImages"
+                :key="index"
+                class="relative"
+              >
+                <img
+                  :src="image.url"
+                  alt="preview"
+                  class="w-full max-h-[6rem] max-w-full object-contain rounded-lg"
+                />
+                <button :disabled="isUploading">
+                  <i
+                    @click="removeImage(index)"
+                    class="absolute top-2 right-2 text-red-500 pi pi-times"
+                  >
+                  </i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <button
-          @click="submitPost"
-          :disabled="isUploading"
-          class="bg-blue-500 text-white py-2 px-4 rounded-lg mt-8"
-        >
-          {{ isUploading ? "Posting..." : "Post" }}
-        </button>
+          <button
+            @click="submitPost"
+            :disabled="isUploading"
+            class="bg-blue-500 text-white py-2 px-4 rounded-lg mt-8"
+          >
+            {{ isUploading ? "Posting..." : "Post" }}
+          </button>
+        </div>
       </div>
     </div>
   </div>

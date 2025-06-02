@@ -36,7 +36,7 @@ const allProducts = ref([
     name: "Engraved Bracelet",
     category: "Accessories",
     price: 25,
-    image: "/buildings/image3.jpg",
+    image: "/bangle.jpeg",
     description: "Beautifully crafted bracelet, perfect for any occasion.",
   },
   {
@@ -44,7 +44,7 @@ const allProducts = ref([
     name: "Campus Hoodie",
     category: "Apparel",
     price: 45,
-    image: "/buildings/image4.jpg",
+    image: "/hoodie.jpeg",
     description: "Stay warm and stylish with this exclusive hoodie.",
   },
   {
@@ -52,7 +52,7 @@ const allProducts = ref([
     name: "Wireless Earbuds",
     category: "Tech",
     price: 50,
-    image: "/buildings/images.jpeg",
+    image: "/earbud.jpeg",
     description: "High-quality sound with long battery life.",
   },
 ]);

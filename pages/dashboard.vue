@@ -23,9 +23,27 @@
       <div class="flex justify-between">
         <div class="w-full md:w-3/5 flex flex-col gap-6">
           <ProfileTab :menuOptions="myMenuOptions" />
+          <spinner
+            v-if="loading"
+            class="!text-black text-2xl flex items-center justify-center h-full w-full"
+          />
+          <!-- Error Message -->
+          <div v-else-if="errorMessage" class="text-red-500 text-center">
+            {{ errorMessage }}
+          </div>
 
-          <div v-for="item in allPosts" :key="item">
-            <postsPostcard :post="item" />
+          <!-- No Posts Message -->
+          <div
+            v-else-if="allPosts.length === 0"
+            class="text-gray-600 text-center"
+          >
+            No post yet try refreshing
+          </div>
+
+          <div v-else class="flex flex-col gap-8">
+            <div v-for="item in allPosts" :key="item">
+              <postsPostcard :post="item" />
+            </div>
           </div>
         </div>
 
@@ -39,16 +57,16 @@
 
 <script setup>
 import { ref, defineProps } from "vue";
+import { usePostStore } from "~/stores/post";
+import { showToast } from "@/utils";
 
 definePageMeta({
   layout: "welcome",
 });
 
-import { usePostStore } from "~/stores/post";
-import { useAuthStore } from "~/stores/authentication";
-
+const loading = ref(false);
+const errorMessage = ref("");
 const Poststore = usePostStore();
-const AuthStore = useAuthStore();
 
 const myMenuOptions = ref([
   { name: " Updates", path: "/dashboard" },
@@ -56,13 +74,29 @@ const myMenuOptions = ref([
   { name: " Forums", path: "/forums" },
 ]);
 
-onMounted(async () => {
-  await Poststore.getAllPosts();
-  Poststore.initUserPost();
+const fetchAllPost = async () => {
+  try {
+    loading.value = true;
+    errorMessage.value = "";
+    await Poststore.getAllPosts();
+    Poststore.initUserPost();
+  } catch (error) {
+    errorMessage.value =
+      error.message.split("(")[1]?.split(")")[0] ||
+      "Unable to fetch posts, try refreshing";
+    showToast("error", errorMessage.value);
+    console.log(error.message, "err");
+    throw error;
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchAllPost();
 });
 
 const allPosts = computed(() => Poststore.allPosts);
-// console.log(allPosts.value, "all");
 </script>
 
 <style scoped></style>

@@ -7,6 +7,7 @@
         :search="true"
         :enableScrollEffect="false"
         :navOptions="navOptions"
+        :justifyCenter="false"
       />
     </div>
 
